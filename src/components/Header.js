@@ -33,6 +33,35 @@ const socials = [
 ];
 
 const Header = () => {
+  // Handle header show/hide animation depending on the scroll direction
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    let prevScrollPos = window.scrollY;
+
+    // Handle scroll events
+    const handleScroll = () => {
+      const currScrollPos = window.scrollY;
+      const currHeaderElement = headerRef.current;
+
+      if (!currHeaderElement)
+        return;
+    
+      if (prevScrollPos > currScrollPos)
+        currHeaderElement.style.transform = "translateY(0)";
+      else
+        currHeaderElement.style.transform = "translateY(-200px)";
+      
+      prevScrollPos = currScrollPos;
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleClick = (anchor) => () => {
     const id = `${anchor}-section`;
     const element = document.getElementById(id);
@@ -46,7 +75,7 @@ const Header = () => {
 
   return (
     <Box
-      position="fixed"
+      position={ "fixed" }
       top={0}
       left={0}
       right={0}
@@ -55,6 +84,7 @@ const Header = () => {
       transitionDuration=".3s"
       transitionTimingFunction="ease-in-out"
       backgroundColor="#18181b"
+      ref={headerRef}
     >
       <Box color="white" maxWidth="1280px" margin="0 auto">
         <HStack
