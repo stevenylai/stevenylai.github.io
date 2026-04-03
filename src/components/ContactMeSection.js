@@ -17,6 +17,12 @@ import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
 import {useAlertContext} from "../context/alertContext";
 
+const enquiryOptions = [
+  { value: "hireMe", label: "Freelance project proposal", },
+  { value: "openSource", label: "Open source consultancy session", },
+  { value: "other", label: "Other", },
+];
+
 const ContactMeSection = () => {
   const {isLoading, response, submit} = useSubmit();
   const { onOpen } = useAlertContext();
@@ -25,7 +31,7 @@ const ContactMeSection = () => {
     initialValues: {
       firstName: "",
       email: "",
-      type: "",
+      type: "hireMe",
       comment: "",
     },
     onSubmit: (values) => {
@@ -38,10 +44,10 @@ const ContactMeSection = () => {
         })
     },
     validationSchema: Yup.object({
-      firstName: Yup.string().required('Fist name is required'),
-      email: Yup.string().email('Invalid email format').required('Email is required'),
-      type: Yup.string().oneOf(['hireMe', 'openSource', 'other']),
-      comment: Yup.string().required('Comment is required'),
+      firstName: Yup.string().required('Required'),
+      email: Yup.string().required('Required').email('Invalid email format'),
+      type: Yup.string().required('Required').oneOf(['hireMe', 'openSource', 'other']).label('Selected Type'),
+      comment: Yup.string().required('Required').min(26, 'Comment should be more than 25 charaters'),
     }),
   });
 
@@ -80,7 +86,7 @@ const ContactMeSection = () => {
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type">
+                <Select id="type" name="type" {...formik.getFieldProps("type")}>
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
