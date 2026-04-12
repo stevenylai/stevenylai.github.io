@@ -1,17 +1,6 @@
 import React, {useEffect} from "react";
 import { useFormik } from "formik";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  Input,
-  Select,
-  Textarea,
-  VStack,
-} from "@chakra-ui/react";
+import { Steps, Box, Button, Heading, Input, NativeSelect, Textarea, VStack, Field } from "@chakra-ui/react";
 import * as Yup from 'yup';
 import FullScreenSection from "./FullScreenSection";
 import useSubmit from "../hooks/useSubmit";
@@ -61,47 +50,50 @@ const ContactMeSection = () => {
         </Heading>
         <Box p={6} rounded="md" w="100%">
           <form onSubmit={formik.handleSubmit}>
-            <VStack spacing={4}>
-              <FormControl isInvalid={formik.touched.firstName && formik.errors.firstName}>
-                <FormLabel htmlFor="firstName">Name</FormLabel>
+            <VStack gap={4}>
+              <Field.Root invalid={formik.touched.firstName && formik.errors.firstName}>
+                <Field.Label htmlFor="firstName">Name</Field.Label>
                 <Input
                   id="firstName"
                   name="firstName"
                   {...formik.getFieldProps("firstName")}
                 />
-                <FormErrorMessage>{formik.errors.firstName}</FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
-                <FormLabel htmlFor="email">Email Address</FormLabel>
+                <Field.ErrorText>{formik.errors.firstName}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root invalid={formik.touched.email && formik.errors.email}>
+                <Field.Label htmlFor="email">Email Address</Field.Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   {...formik.getFieldProps("email")}
                 />
-                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type" {...formik.getFieldProps("type")}>
-                  <option value="hireMe">Freelance project proposal</option>
-                  <option value="openSource">
-                    Open source consultancy session
-                  </option>
-                  <option value="other">Other</option>
-                </Select>
-              </FormControl>
-              <FormControl isInvalid={formik.touched.comment && formik.errors.comment}>
-                <FormLabel htmlFor="comment">Your message</FormLabel>
+                <Field.ErrorText>{formik.errors.email}</Field.ErrorText>
+              </Field.Root>
+              <Field.Root>
+                <Field.Label htmlFor="type">Type of enquiry</Field.Label>
+                <NativeSelect.Root>
+                  <NativeSelect.Field id="type" name="type" {...formik.getFieldProps("type")}>
+                    <option value="hireMe">Freelance project proposal</option>
+                    <option value="openSource">
+                      Open source consultancy session
+                    </option>
+                    <option value="other">Other</option>
+                  </NativeSelect.Field>
+                  <NativeSelect.Indicator />
+                </NativeSelect.Root>
+              </Field.Root>
+              <Field.Root invalid={formik.touched.comment && formik.errors.comment}>
+                <Field.Label htmlFor="comment">Your message</Field.Label>
                 <Textarea
                   id="comment"
                   name="comment"
                   height={250}
                   {...formik.getFieldProps("comment")}
                 />
-                <FormErrorMessage>{formik.errors.comment}</FormErrorMessage>
-              </FormControl>
-              <Button type="submit" colorScheme="purple" width="full" disabled={isLoading}>
+                <Field.ErrorText>{formik.errors.comment}</Field.ErrorText>
+              </Field.Root>
+              <Button type="submit" colorPalette="purple" width="full" disabled={isLoading}>
                 Submit
               </Button>
             </VStack>
